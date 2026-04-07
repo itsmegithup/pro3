@@ -1,0 +1,142 @@
+:root {
+  --paper-bg: #fdfaf3;
+  --speed: 0.6s;
+  --book-w: 400px;
+  --book-h: 580px;
+}
+
+/* CUSTOM FONT */
+@font-face {
+  font-family: 'OldEnglish';
+  src: url('OPTIEngraversOldEnglish.otf') format('opentype');
+}
+
+.old-english-font {
+  font-family: 'OldEnglish', serif;
+}
+
+/* GLOBAL */
+body {
+  background: #d1ccc0;
+  margin: 0;
+  font-family: Georgia, serif;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+  touch-action: pan-y;
+}
+
+.text-center { text-align: center; }
+.bold { font-weight: bold; }
+
+/* CONTAINER */
+.book-container {
+  perspective: 2500px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* BOOK */
+.book {
+  position: relative;
+  width: var(--book-w);
+  height: var(--book-h);
+  transform-style: preserve-3d;
+  transition: transform var(--speed);
+}
+
+.book.open-desktop {
+  transform: translateX(50%);
+}
+
+/* PAGES */
+.paper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  transform-origin: left center;
+  transform-style: preserve-3d;
+
+  transition: transform var(--speed);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background: var(--paper-bg);
+  border: 1px solid #d4d0c5;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* CONTENT */
+.content {
+  padding: 18px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.font-old-london {
+  font-family: 'UnifrakturMaguntia', serif;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  text-align: center;
+  border-bottom: 2px double #000;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  margin: 10px 0;
+  filter: sepia(0.3);
+}
+
+/* BOX */
+.box {
+  background: #eee;
+  padding: 10px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* FLIP */
+.flipped {
+  transform: rotateY(-180deg);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  :root {
+    --book-w: 95vw;
+    --book-h: 90vh;
+  }
+
+  .content {
+    padding: 14px;
+  }
+
+  img {
+    height: 130px;
+  }
+
+  .book.open-desktop {
+    transform: none;
+  }
+}
