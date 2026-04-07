@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding Times - Interactive</title>
+   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook&display=swap" rel="stylesheet">
+
+   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <style>
+:root {
+    --paper-bg: #fdfaf3;
+    --ink: #1a1a1a;
+    --olive: #556b2f;
+    --speed: 0.8s;
+    /* Flexible dimensions */
+    --book-width: 380px;
+    --book-height: 550px;
+}
+
+body {
+    background-color: #d1ccc0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Georgia', serif;
+    overflow: hidden; /* Prevents scroll during animation */
+}
+
+.book-container {
+    perspective: 2000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.book {
+    position: relative;
+    width: var(--book-width);
+    height: var(--book-height);
+    transition: transform var(--speed);
+    transform-style: preserve-3d;
+}
+
+/* Mobile Overrides */
+@media (max-width: 600px) {
+    :root {
+        /* Scale to screen width minus some padding */
+        --book-width: 90vw;
+        --book-height: 80vh; 
+    }
+    
+    .open-book {
+        /* On mobile, we stay centered instead of shifting right */
+        transform: translateX(0) !important;
+    }
+}
+
+.paper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transform-style: preserve-3d;
+    transition: transform var(--speed);
+    cursor: pointer;
+}
+
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: var(--paper-bg);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.05), 5px 5px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.newspaper-content {
+    padding: 20px;
+    border: 1px solid #e0ddd5;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem; /* Slightly smaller for mobile */
+}
+
+/* Ensure images fit the flexible height */
+.image-box img, .article-image img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    filter: sepia(0.3) contrast(1.1);
+    margin: 10px 0;
+}
+
+.font-old-london {
+    font-family: 'Times New Roman', serif;
+    font-weight: 900;
+    font-size: clamp(1.5rem, 8vw, 2.5rem); /* Responsive font */
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    margin: 5px 0;
+}
+
+.glass-btn {
+    background: rgba(85, 107, 47, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--olive);
+    padding: 12px;
+    color: var(--olive);
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: auto; /* Push to bottom */
+    transition: 0.3s;
+}
+
+.flipped { transform: rotateY(-180deg); }
+.open-book { transform: translateX(50%); }
+    </style>
+
+
+<div class="book-container">
+    <div id="book" class="book">
+        
+        <div id="p1" class="paper" style="z-index: 3;">
+            <div class="front">
+                <div class="newspaper-content cover">
+                    <div class="header-meta">EDITION N° 3104 | 27/06/2026</div>
+                    <h1 class="font-old-london">The Wedding Time</h1>
+                    <div class="headline">STÉPHANIE & MOHAMED</div>
+                    <div class="sub-headline">Se disent Oui !!!</div>
+                    <div class="image-box">
+                        <img src="https://picsum.photos/seed/wedding1/400/300" alt="Cover Photo">
+                    </div>
+                    <div class="save-date-footer">
+                        <div class="line">SAVE THE DATE</div>
+                        <div class="date">SAMEDI, 27 JUIN 2026</div>
+                    </div>
+                </div>
+            </div>
+            <div class="back">
+                <div class="newspaper-content">
+                    <h1 class="mini-header">L'Événement</h1>
+                    <h2 class="article-title">LE MATCH PARFAIT</h2>
+                    <div class="article-body">
+                        <p><strong>STÉPHANIE ET MOHAMED</strong> se marient. Leur différences les ont réunis et l'amour les a unis.</p>
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/couple2/400/250" alt="Couple">
+                        </div>
+                        <p>Après plusieurs saisons passées à jouer en parfaite harmonie...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="p2" class="paper" style="z-index: 2;">
+            <div class="front">
+                <div class="newspaper-content">
+                    <h1 class="mini-header">L'Événement</h1>
+                    <h2 class="article-title">L'INVITATION</h2>
+                    <div class="invitation-details">
+                        <div class="card-item">
+                            <h3>Célébration Religieuse</h3>
+                            <p>15H00 - Paroisse St Joseph</p>
+                        </div>
+                        <div class="card-item">
+                            <h3>Cocktail</h3>
+                            <p>18H00 - Salle Le Luxury</p>
+                        </div>
+                        <button class="glass-btn">Confirmer Ma Présence</button>
+                    </div>
+                    <div class="calendar-dummy">
+                        <strong>JUIN 2026</strong>
+                        <div class="day-highlight">27</div>
+                    </div>
+                </div>
+            </div>
+            <div class="back">
+                <div class="newspaper-content final-page">
+                    <h2 class="article-title">LE PETIT MOT</h2>
+                    <p class="quote">"Nous nous sommes trouvés, puis choisis..."</p>
+                    <img src="https://picsum.photos/seed/rings/400/200" alt="Rings">
+                    <p class="footer-note">Merci à nos familles et amis.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+ const book = document.getElementById('book');
+const p1 = document.getElementById('p1');
+const p2 = document.getElementById('p2');
+
+let currentState = 1;
+
+p1.addEventListener('click', () => {
+    if (currentState === 1) {
+        book.classList.add('open-book');
+        p1.classList.add('flipped');
+        setTimeout(() => { p1.style.zIndex = 1; }, 300);
+        currentState = 2;
+    } else {
+        book.classList.remove('open-book');
+        p1.classList.remove('flipped');
+        p1.style.zIndex = 3;
+        currentState = 1;
+    }
+});
+
+p2.addEventListener('click', (e) => {
+    if (e.target.classList.contains('glass-btn')) return;
+
+    if (currentState === 2) {
+        p2.classList.add('flipped');
+        // Increase z-index so back of p2 covers everything
+        setTimeout(() => { p2.style.zIndex = 4; }, 300);
+        currentState = 3;
+    } else if (currentState === 3) {
+        p2.classList.remove('flipped');
+        p2.style.zIndex = 2;
+        currentState = 2;
+    }
+});
+</script>
